@@ -4,6 +4,7 @@ import path from 'path'
 
 const app = express()
 const port = 4141
+const host = '0.0.0.0';
 
 app.get('/', (_req, res) => {
   res.send('Hello World!')
@@ -21,6 +22,6 @@ app.get('/roster/:id', (req, res) => {
   })
 })
 
-app.listen(port, () => {
-  return console.log(`Express is listening at http://localhost:${port}`)
+app.listen(port, host, () => {
+  return console.log(`Express is listening at http://${host}:${port}`)
 })

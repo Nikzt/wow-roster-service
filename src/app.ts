@@ -2,32 +2,41 @@ import express from 'express'
 import fs from 'fs'
 import path from 'path'
 import cors from 'cors'
+import jsonDb from './db/jsonDb';
+import { Roster } from './models/models';
 
 const app = express()
 const port = 4141
 const host = '0.0.0.0';
 
+jsonDb.initDbFromTestData();
+
 app.use(cors({
   origin: '*'
-}))
+}));
+app.use(express.json());
 
 app.get('/', (_req, res) => {
-  res.send('Hello World!')
+  res.send('Roster Service Online');
 });
 
-app.get('/roster/:id', (req, res) => {
+app.get('/roster/:id', async (req, res) => {
   const rosterId = req.params.id;
-  fs.readFile(path.resolve('data', 'rosters.json'), 'utf8', (err, data) => {
-    const rosters = JSON.parse(data);
-    const roster = rosters[rosterId];
-    if (!roster)
-      res.sendStatus(404);
-    else
-      res.send(roster);
-  })
+  const roster = await jsonDb.dbGetRosterById(rosterId);
+  if (!roster)
+    res.sendStatus(404);
+  else
+    res.send(roster);
 })
 
-app.post('/roster/:id')
+app.post('/roster', async (req, res) => {
+  const roster = req.body as Roster;
+  const result = jsonDb.dbUpdateRoster(roster);
+  if (result)
+    res.sendStatus(200);
+  else
+    res.sendStatus(500);
+})
 
 app.listen(port, host, () => {
   return console.log(`Express is listening at http://${host}:${port}`)

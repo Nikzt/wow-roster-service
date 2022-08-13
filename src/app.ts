@@ -1,10 +1,15 @@
 import express from 'express'
 import fs from 'fs'
 import path from 'path'
+import cors from 'cors'
 
 const app = express()
 const port = 4141
 const host = '0.0.0.0';
+
+app.use(cors({
+  origin: '*'
+}))
 
 app.get('/', (_req, res) => {
   res.send('Hello World!')
@@ -21,6 +26,8 @@ app.get('/roster/:id', (req, res) => {
       res.send(roster);
   })
 })
+
+app.post('/roster/:id')
 
 app.listen(port, host, () => {
   return console.log(`Express is listening at http://${host}:${port}`)

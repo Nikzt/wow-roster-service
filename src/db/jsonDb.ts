@@ -1,7 +1,7 @@
 import testRosterData from './testRosterData';
 import { JsonDB } from 'node-json-db';
 import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
-import { Roster } from '../models/models';
+import { Player, Roster } from '../models/models';
 
 const db = new JsonDB(new Config("rosterDb", true, false, '/'));
 
@@ -30,8 +30,31 @@ const dbUpdateRoster = async (roster: Roster) => {
   return true;
 }
 
+const dbUpdatePlayer = async (rosterId: string, playerId: string, player: Player) => {
+  try {
+    const player = await db.exists(`/${rosterId}/players/${playerId}`);
+    if (!player) return false;
+    await db.push(`/${rosterId}/players/${playerId}`, player);
+  } catch (e) {
+    console.log(e);
+    return false
+  }
+  return true;
+}
+
+const dbGetPlayer = async (rosterId: string, playerId: string) => {
+  let player: Player;
+  try {
+    player = await db.getObject(`/${rosterId}/players/${playerId}`)
+  } catch (e) {
+    console.log(e);
+  }
+  return player;
+}
+
 export default {
   initDbFromTestData,
   dbUpdateRoster,
+  dbUpdatePlayer,
   dbGetRosterById
 }

@@ -99,7 +99,9 @@ export type PlayerInfo = {
 
 export type Roster = {
   id: string;
-  players: Player[];
+  players: {
+    [key: string]: Player
+  }
 }
 
 export type RosterDb = {

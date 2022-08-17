@@ -3,8 +3,8 @@ import { RosterDb, WoWClassEnum, WoWSpecEnum } from "../models/models";
 const testRosterData: RosterDb = {
   "NorthrendCasual": {
     id: "NorthrendCasual",
-    players: [
-      {
+    players: {
+      "Bence": {
         id: "Bence",
         info: {
           name: "Bence"
@@ -18,7 +18,7 @@ const testRosterData: RosterDb = {
         ],
         mainCharacterName: "Zalgo",
       },
-      {
+      "Bram": {
         id: "Bram",
         info: {
           name: "Bram"
@@ -32,7 +32,7 @@ const testRosterData: RosterDb = {
         ],
         mainCharacterName: "Tygerz",
       }
-    ]
+    }
   }
 }
 

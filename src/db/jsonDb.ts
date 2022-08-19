@@ -32,8 +32,8 @@ const dbUpdateRoster = async (roster: Roster) => {
 
 const dbUpdatePlayer = async (rosterId: string, playerId: string, player: Player) => {
   try {
-    const player = await db.exists(`/${rosterId}/players/${playerId}`);
-    if (!player) return false;
+    const playerExists = await db.exists(`/${rosterId}/players/${playerId}`);
+    if (!playerExists) return false;
     await db.push(`/${rosterId}/players/${playerId}`, player);
   } catch (e) {
     console.log(e);
@@ -46,8 +46,10 @@ const dbGetPlayer = async (rosterId: string, playerId: string) => {
   let player: Player;
   try {
     player = await db.getObject(`/${rosterId}/players/${playerId}`)
+    console.log(player);
   } catch (e) {
     console.log(e);
+    return null;
   }
   return player;
 }
@@ -56,5 +58,6 @@ export default {
   initDbFromTestData,
   dbUpdateRoster,
   dbUpdatePlayer,
-  dbGetRosterById
+  dbGetRosterById,
+  dbGetPlayer,
 }

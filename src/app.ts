@@ -1,6 +1,4 @@
 import express from 'express'
-import fs from 'fs'
-import path from 'path'
 import cors from 'cors'
 import jsonDb from './db/jsonDb';
 import { Player, Roster } from './models/models';
@@ -47,6 +45,16 @@ app.post('/roster/:rosterId/player/:playerId', async (req, res) => {
     res.sendStatus(200);
   else
     res.sendStatus(500);
+})
+
+app.get('/roster/:rosterId/player/:playerId', async (req, res) => {
+  const rosterId = req.params.rosterId;
+  const playerId = req.params.playerId
+  const result = await jsonDb.dbGetPlayer(rosterId, playerId);
+  if (result != null)
+    res.send(result);
+  else
+    res.sendStatus(404);
 })
 
 app.listen(port, host, () => {
